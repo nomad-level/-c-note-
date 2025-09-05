@@ -1,0 +1,11 @@
+<h1>Edit Quote</h1>
+<form action="/quotes/<%= quote._id %>?_method=PUT" method="POST">
+  <label>Text:</label>
+  <input type="text" name="text" value="<%= quote.text %>" required>
+  <br>
+  <label>Author:</label>
+  <input type="text" name="author" value="<%= quote.author %>" required>
+  <br>
+  <button type="submit">Update</button>
+</form>
+
