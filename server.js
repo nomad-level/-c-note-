@@ -1,95 +1,71 @@
-// ================================
-// Import dependencies
-// ================================
-const express = require("express")   // framework to handle routes
-const mongoose = require("mongoose") // helps us talk to MongoDB
-const methodOverride = require("method-override") // lets us use PUT & DELETE in forms
-const path = require("path")         // helps with file paths
-require("dotenv").config()           // loads .env file (for MongoDB connection string)
+// server.js
+// --------------------
+// This is the main entry point of the app
+// It sets up Express, MongoDB, middleware, and routes
+// --------------------
 
-const app = express()                // create our Express app
-const PORT = process.env.PORT || 3000
+const express = require("express");
+const mongoose = require("mongoose");
+const methodOverride = require("method-override");
+const session = require("express-session");
+const path = require("path");
 
-// ================================
+const app = express();
+
+// --------------------
 // Middleware setup
-// ================================
-app.set("view engine", "ejs")                       // tells Express to use EJS templates
-app.set("views", path.join(__dirname, "views"))     // where our EJS files live
-app.use(express.urlencoded({ extended: true }))     // parse form data (req.body)
-app.use(methodOverride("_method"))                  // look for ?_method=PUT/DELETE in forms
+// --------------------
 
-// ================================
-// Database connection
-// ================================
-mongoose.connect(process.env.MONGODB_URI)
+// Parse form data (so we can read POST form submissions)
+app.use(express.urlencoded({ extended: true }));
+
+// Method override allows us to use PUT and DELETE in forms
+app.use(methodOverride("_method"));
+
+// Setup sessions (to keep users logged in)
+app.use(session({
+  secret: "notepadsecret", // change this in production
+  resave: false,
+  saveUninitialized: true
+}));
+
+// Set the view engine to EJS (so we can use .ejs files)
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// --------------------
+// MongoDB connection
+// --------------------
+mongoose.connect("mongodb://127.0.0.1:27017/digitalNotepad")
   .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.log(err))
+  .catch(err => console.log(err));
 
-// ================================
-// Schema & Model (Quotes)
-// ================================
-// Think of this as the "blueprint" for one Quote
-const quoteSchema = new mongoose.Schema({
-  text: { type: String, required: true },     // what the quote says
-  author: { type: String, required: true },   // who said it
-})
-
-// Turn schema into a model so we can actually use it
-const Quote = mongoose.model("Quote", quoteSchema)
-
-// ================================
+// --------------------
 // Routes
-// ================================
+// --------------------
+const authRoutes = require("./routes/auth");
+const noteRoutes = require("./routes/notes");
 
-// Home route - redirect to /quotes
-app.get("/", (req, res) => {
-  res.redirect("/quotes")
-})
+// Homepage route
+const Note = require("./models/models/Note");
+app.get("/", async (req, res) => {
+  try {
+    const quotes = await Note.find({}) || [];
+    res.render("index", { quotes }); // render views/index.ejs with quotes
+  } catch (err) {
+    console.log(err);
+    res.render("index", { quotes: [] });
+  }
+});
 
-// INDEX - show all quotes
-app.get("/quotes", async (req, res) => {
-  const quotes = await Quote.find()
-  res.render("index", { quotes }) // pass quotes to index.ejs
-})
+// Use our route files
+app.use("/", authRoutes);
+app.use("/notes", noteRoutes);
 
-// NEW - show form to create a quote
-app.get("/quotes/new", (req, res) => {
-  res.render("new")
-})
-
-// CREATE - add new quote to DB
-app.post("/quotes", async (req, res) => {
-  await Quote.create(req.body)
-  res.redirect("/quotes") // go back to all quotes
-})
-
-// SHOW - show one quote by ID
-app.get("/quotes/:id", async (req, res) => {
-  const quote = await Quote.findById(req.params.id)
-  res.render("show", { quote })
-})
-
-// EDIT - show form to edit a quote
-app.get("/quotes/:id/edit", async (req, res) => {
-  const quote = await Quote.findById(req.params.id)
-  res.render("edit", { quote })
-})
-
-// UPDATE - update a quote
-app.put("/quotes/:id", async (req, res) => {
-  await Quote.findByIdAndUpdate(req.params.id, req.body)
-  res.redirect("/quotes")
-})
-
-// DELETE - remove a quote
-app.delete("/quotes/:id", async (req, res) => {
-  await Quote.findByIdAndDelete(req.params.id)
-  res.redirect("/quotes")
-})
-
-// ================================
-// Start server
-// ================================
+// --------------------
+// Start the server
+// --------------------
+const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
-})
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
