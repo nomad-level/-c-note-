@@ -16,20 +16,21 @@ const app = express();
 // Middleware setup
 // --------------------
 
-// Parse form data (so we can read POST form submissions)
+
 app.use(express.urlencoded({ extended: true }));
-
-// Method override allows us to use PUT and DELETE in forms
+app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
-
-// Setup sessions (to keep users logged in)
 app.use(session({
-  secret: "notepadsecret", // change this in production
+  secret: "notepadsecret",
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
 }));
 
-// Set the view engine to EJS (so we can use .ejs files)
+// Make session userId available to all views
+app.use((req, res, next) => {
+  res.locals.userId = req.session.userId;
+  next();
+});
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -46,26 +47,16 @@ mongoose.connect("mongodb://127.0.0.1:27017/digitalNotepad")
 const authRoutes = require("./routes/auth");
 const noteRoutes = require("./routes/notes");
 
+
 // Homepage route
-const Note = require("./models/models/Note");
-app.get("/", async (req, res) => {
-  try {
-    const quotes = await Note.find({}) || [];
-    res.render("index", { quotes }); // render views/index.ejs with quotes
-  } catch (err) {
-    console.log(err);
-    res.render("index", { quotes: [] });
-  }
+app.get("/", (req, res) => {
+  res.render("index");
 });
 
-// Use our route files
 app.use("/", authRoutes);
 app.use("/notes", noteRoutes);
 
-// --------------------
-// Start the server
-// --------------------
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

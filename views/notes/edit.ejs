@@ -1,0 +1,19 @@
+<h1>Edit Note</h1>
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="error"><%= error %></div>
+<% } %>
+<% if (note) { %>
+<form action="/notes/<%= note._id %>?_method=PUT" method="POST">
+  <label>Title:</label>
+  <input type="text" name="title" value="<%= note.title %>" required>
+  <br>
+  <label>Body:</label>
+  <textarea name="body" required><%= note.body %></textarea>
+  <br>
+  <label>Category:</label>
+  <input type="text" name="category" value="<%= note.category %>" required>
+  <br>
+  <button type="submit" class="btn">Update</button>
+</form>
+<% } %>
+<a href="/notes" class="btn">Back to Notes</a>

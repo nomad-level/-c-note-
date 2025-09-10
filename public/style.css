@@ -1,0 +1,83 @@
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+  padding: 20px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.header {
+  background: #333;
+  color: white;
+  padding: 10px 0;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  padding: 0 20px;
+}
+
+.nav {
+  background: #444;
+  padding: 10px 20px;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 15px;
+  background: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-danger {
+  background: #d9534f;
+}
+
+form {
+  margin: 20px 0;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.note-list {
+  list-style: none;
+  padding: 0;
+}
+
+.note-list li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.note-list li:last-child {
+  border-bottom: none;
+}

@@ -1,17 +1,41 @@
 
-<% var quotes = typeof quotes !== 'undefined' ? quotes : []; %>
-<h1>All Notes</h1>
-<a href="/notes/new">➕ Add a new note</a>
-<ul>
-  <% (quotes || []).forEach(note => { %>
-    <li>
-      <strong><%= note.title %></strong> (<%= note.category %>)<br>
-      <%= note.body %>
-      <a href="/notes/<%= note._id %>">View</a>
-      <a href="/notes/<%= note._id %>/edit">Edit</a>
-      <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display:inline;">
-        <button type="submit">Delete</button>
-      </form>
-    </li>
-  <% }) %>
-</ul>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Digital Notepad</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Digital Notepad</h1>
+  <p>Save and organize your code snippets and notes</p>
+  
+  <% if (!locals.userId) { %>
+    <div>
+      <a href="/signup" class="btn">Sign Up</a>
+      <a href="/login" class="btn">Login</a>
+    </div>
+  <% } else { %>
+    <p>You are already logged in.</p>
+    <a href="/notes" class="btn">Go to My Notes</a>
+    <a href="/logout" class="btn">Logout</a>
+  <% } %>
+</body>
+</html>

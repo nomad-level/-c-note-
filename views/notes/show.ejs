@@ -1,0 +1,11 @@
+<h1>Note Details</h1>
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="error"><%= error %></div>
+<% } %>
+<% if (note) { %>
+  <strong>Title:</strong> <%= note.title %><br>
+  <strong>Category:</strong> <%= note.category %><br>
+  <strong>Body:</strong> <%= note.body %><br>
+  <a href="/notes/<%= note._id %>/edit" class="btn">Edit</a>
+  <a href="/notes" class="btn">Back to Notes</a>
+<% } %>
