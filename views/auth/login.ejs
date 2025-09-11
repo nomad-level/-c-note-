@@ -15,11 +15,11 @@
     <div class="error"><%= error %></div>
   <% } %>
   <form action="/login" method="POST">
-    <label>Username:</label>
-    <input type="text" name="username" required>
+  <label>E-mail:</label>
+  <input type="email" name="email" required style="width: 100%; box-sizing: border-box;">
     <br><br>
     <label>Password:</label>
-    <input type="password" name="password" required>
+  <input type="password" name="password" required style="width: 100%; box-sizing: border-box;">
     <br><br>
     <button type="submit">Login</button>
   </form>

@@ -3,7 +3,7 @@
 // This is the main entry point of the app
 // It sets up Express, MongoDB, middleware, and routes
 // --------------------
-
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
 app.use(session({
-  secret: "notepadsecret",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false
 }));
@@ -37,7 +37,7 @@ app.set("views", path.join(__dirname, "views"));
 // --------------------
 // MongoDB connection
 // --------------------
-mongoose.connect("mongodb://127.0.0.1:27017/digitalNotepad")
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.log(err));
 

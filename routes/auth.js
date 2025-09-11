@@ -20,14 +20,14 @@ router.get("/signup", (req, res) => {
 
 router.post("/signup", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     // Check if user already exists
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.render("auth/signup", { error: "Username already exists" });
+      return res.render("auth/signup", { error: "E-mail already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
+    const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
     req.session.userId = newUser._id;
     res.redirect("/notes");
@@ -49,8 +49,8 @@ router.get("/login", (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
     if (!user) {
       return res.render("auth/login", { error: "User not found." });
     }
