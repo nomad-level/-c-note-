@@ -1,41 +1,81 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Digital Notepad</title>
+  <title>c/note</title>
   <link rel="stylesheet" href="/style.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      text-align: center;
-    }
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      margin: 10px;
-      background-color: #4CAF50;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-  </style>
 </head>
 <body>
-  <h1>Welcome to Digital Notepad</h1>
-  <p>Save and organize your code snippets and notes</p>
-  
-  <% if (!locals.userId) { %>
-    <div>
-      <a href="/signup" class="btn">Sign Up</a>
-      <a href="/login" class="btn">Login</a>
+  <div class="center-home">
+    <div class="home-logo">
+      <span class="angle">&lt;</span><span class="logo-c">c</span><span class="logo-slash">/</span><span class="logo-note">note</span><span class="angle">&gt;</span>
     </div>
-  <% } else { %>
-    <p>You are already logged in.</p>
-    <a href="/notes" class="btn">Go to My Notes</a>
-    <a href="/logout" class="btn">Logout</a>
-  <% } %>
+    <div class="home-links-row">
+      <button id="signup-btn" class="home-link signup-link" type="button" style="background:none;border:none;padding:0;cursor:pointer;">
+        <span class="angle">&lt;</span>
+        <span class="signup-sign">sign</span><span class="signup-slash">/</span><span class="signup-up">up</span>
+        <span class="angle">&gt;</span>
+      </button>
+      <span class="home-link-spacer"></span>
+      <button id="login-btn" class="home-link login-link" type="button" style="background:none;border:none;padding:0;cursor:pointer;">
+        <span class="angle">&lt;</span>
+        <span class="login-log">log</span><span class="login-slash">/</span><span class="login-in">in</span>
+        <span class="angle">&gt;</span>
+      </button>
+      <!-- Login Dropdown Form -->
+      <div id="login-dropdown" class="dropdown-form">
+        <form class="form-vertical" method="POST" action="/login">
+          <label for="login-email">E-mail</label>
+          <input type="email" id="login-email" name="email" required>
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" required>
+          <button class="submit-btn" type="submit">Log In</button>
+        </form>
+        <div class="form-or">or</div>
+        <div class="social-logins">
+          <button class="social-btn google-btn" type="button">Sign in with Google</button>
+          <button class="social-btn github-btn" type="button">Sign in with GitHub</button>
+        </div>
+      </div>
+      <!-- Signup Dropdown Form -->
+      <div id="signup-dropdown" class="dropdown-form">
+        <form class="form-vertical" method="POST" action="/signup">
+          <label for="signup-name">Name</label>
+          <input type="text" id="signup-name" name="name" required>
+          <label for="signup-email">E-mail</label>
+          <input type="email" id="signup-email" name="email" required>
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password" required>
+          <label for="signup-confirm">Confirm Password</label>
+          <input type="password" id="signup-confirm" name="confirm" required>
+          <button class="submit-btn" type="submit">Sign Up</button>
+        </form>
+        <div class="form-or">or</div>
+        <div class="social-logins">
+          <button class="social-btn google-btn" type="button">Sign in with Google</button>
+          <button class="social-btn github-btn" type="button">Sign in with GitHub</button>
+        </div>
+      </div>
+</body>
+<script>
+  // Toggle the signup and login dropdowns
+  const signupBtn = document.getElementById('signup-btn');
+  const signupDropdown = document.getElementById('signup-dropdown');
+  const loginBtn = document.getElementById('login-btn');
+  const loginDropdown = document.getElementById('login-dropdown');
+  document.addEventListener('click', function(e) {
+    if (signupBtn.contains(e.target)) {
+      signupDropdown.classList.toggle('show');
+      loginDropdown.classList.remove('show');
+    } else if (loginBtn.contains(e.target)) {
+      loginDropdown.classList.toggle('show');
+      signupDropdown.classList.remove('show');
+    } else if (!signupDropdown.contains(e.target) && !loginDropdown.contains(e.target)) {
+      signupDropdown.classList.remove('show');
+      loginDropdown.classList.remove('show');
+    }
+  });
+</script>
+    </div>
+  </div>
 </body>
 </html>
