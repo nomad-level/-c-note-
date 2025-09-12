@@ -1,24 +1,37 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Theme toggle
+  // Theme toggle with localStorage persistence
   const themeToggle = document.getElementById('mode-toggle');
+  const setTheme = (dark) => {
+    if (dark) {
+      document.body.classList.add('dark-mode');
+      if (themeToggle) {
+        const icon = themeToggle.querySelector('img');
+        if (icon) icon.src = '/sun.svg';
+      }
+    } else {
+      document.body.classList.remove('dark-mode');
+      if (themeToggle) {
+        const icon = themeToggle.querySelector('img');
+        if (icon) icon.src = '/moon.svg';
+      }
+    }
+  };
+  // On load, set theme from localStorage
+  setTheme(localStorage.getItem('padDarkMode') === 'true');
   if (themeToggle) {
     themeToggle.addEventListener('click', function() {
-      document.body.classList.toggle('dark-mode');
-      // Optionally swap SVG icons for sun/moon
-      const icon = themeToggle.querySelector('img');
-      if (icon) {
-        if (document.body.classList.contains('dark-mode')) {
-          icon.src = '/sun.svg';
-        } else {
-          icon.src = '/moon.svg';
-        }
-      }
+      const dark = !document.body.classList.contains('dark-mode');
+      setTheme(dark);
+      localStorage.setItem('padDarkMode', dark);
     });
   }
 
   // Dropdown interactivity
   const padDropdownLabel = document.getElementById('padDropdownLabel');
   const padDropdownList = document.getElementById('padDropdownList');
+  const padDeleteForm = document.getElementById('pad-delete-form');
+  const padForm = document.getElementById('pad-form');
+
   if (padDropdownLabel && padDropdownList) {
     padDropdownLabel.addEventListener('click', function(e) {
       padDropdownList.hidden = !padDropdownList.hidden;
@@ -49,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('note-category').value = note.category;
             document.getElementById('note-title').value = note.title;
             document.getElementById('note-body').value = note.body;
+            // Set delete form action to this note's delete URL
+            if (padDeleteForm) padDeleteForm.action = `/notes/${noteId}?_method=DELETE`;
           })
           .catch(err => {
             alert('Could not load note: ' + err.message);
@@ -59,6 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
     });
+    // When creating a new note, clear the delete form action
+    if (padForm && padDeleteForm) {
+      padForm.addEventListener('reset', function() {
+        padDeleteForm.action = '';
+      });
+    }
     // Close dropdown if clicking outside
     document.addEventListener('click', function(e) {
       if (!padDropdownLabel.contains(e.target) && !padDropdownList.contains(e.target)) {

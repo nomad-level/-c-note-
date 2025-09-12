@@ -1,3 +1,9 @@
+<script>
+  if (localStorage.getItem('padDarkMode') === 'true') {
+    document.documentElement.classList.add('dark-mode');
+    document.body.classList.add('dark-mode');
+  }
+</script>
 <%- include('../layout') %>
 <link rel="stylesheet" href="/stylesheets/pad.css">
 <script src="/javascripts/pad.js" defer></script>
@@ -66,6 +72,13 @@
       placeholder="..."
       required
     ><%= note ? note.body : '' %></textarea>
-    <button type="submit" class="pad-save-btn">Save</button>
+    <div style="display: flex; gap: 1rem; justify-content: flex-end; align-items: center; margin-top: 10px;">
+      <button type="submit" class="pad-save-btn">Save</button>
+    </div>
+  </form>
+  <form id="pad-delete-form" action="" method="POST" style="display:inline; float:right; margin-top:-56px; margin-right:10px;">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" class="pad-delete-btn" style="background:#d32f2f;color:#fff;font-weight:bold;border:none;border-radius:6px;padding:10px 22px;font-size:1.1rem;cursor:pointer;">Delete</button>
+  </form>
   </form>
 </div>
