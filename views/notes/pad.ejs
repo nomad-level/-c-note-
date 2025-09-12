@@ -1,0 +1,71 @@
+<%- include('../layout') %>
+<link rel="stylesheet" href="/stylesheets/pad.css">
+<script src="/javascripts/pad.js" defer></script>
+<div class="pad-header">
+  <div class="pad-logo">
+    <span class="angle">&lt;</span><span class="logo-c">c</span><span class="logo-slash">/</span><span class="logo-note">note</span><span class="angle">&gt;</span>
+  </div>
+  <div class="pad-mode-toggle" id="mode-toggle" tabindex="0" title="Toggle dark/light mode">
+    <!-- Replace this with your preferred moon/sun SVG icon or keep as img for now -->
+    <img src="/moon.svg" alt="Toggle dark/light mode" class="pad-moon-icon">
+  </div>
+  <a href="/logout" class="pad-logout-link">
+    <span class="angle">&lt;</span>log/<span class="logout-out">out</span><span class="angle">&gt;</span>
+  </a>
+</div>
+
+<div class="pad-main">
+  <div class="pad-dropdown-container">
+    <label class="pad-dropdown-label" for="pad-dropdown" tabindex="0" id="padDropdownLabel">[pad]</label>
+    <div class="pad-dropdown-list" id="padDropdownList" hidden>
+      <!-- Dynamically render tags and note titles (see below) -->
+      <% if (tags && tags.length) { %>
+        <% tags.forEach(function(tag) { %>
+          <div class="pad-tag-item" data-tag="<%= tag.name %>">
+            <div class="pad-tag-label" tabindex="0"><%= tag.name %></div>
+            <% if (tag.notes && tag.notes.length) { %>
+              <div class="pad-titles-list" hidden>
+                <% tag.notes.forEach(function(note) { %>
+                  <div class="pad-title-item" data-id="<%= note._id %>" data-title="<%= note.title %>"><%= note.title %></div>
+                <% }) %>
+              </div>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="pad-no-tags">No saved tags</div>
+      <% } %>
+    </div>
+  </div>
+
+  <form id="pad-form" class="pad-form" method="POST" action="/notes" autocomplete="off">
+    <input
+      id="note-category"
+      name="category"
+      class="pad-input"
+      type="text"
+      placeholder="[tag]"
+      value="<%= note ? note.category : '' %>"
+      autocomplete="off"
+      required
+    />
+    <input
+      id="note-title"
+      name="title"
+      class="pad-input"
+      type="text"
+      placeholder="[title]"
+      value="<%= note ? note.title : '' %>"
+      autocomplete="off"
+      required
+    />
+    <textarea
+      id="note-body"
+      name="body"
+      class="pad-textarea"
+      placeholder="..."
+      required
+    ><%= note ? note.body : '' %></textarea>
+    <button type="submit" class="pad-save-btn">Save</button>
+  </form>
+</div>

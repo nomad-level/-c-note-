@@ -1,17 +1,24 @@
-<h1>New Note</h1>
-<% if (typeof error !== 'undefined' && error) { %>
-  <div class="error"><%= error %></div>
-<% } %>
-<form action="/notes" method="POST">
-  <label>Title:</label>
-  <input type="text" name="title" required>
-  <br>
-  <label>Body:</label>
-  <textarea name="body" required></textarea>
-  <br>
-  <label>Category:</label>
-  <input type="text" name="category" required>
-  <br>
-  <button type="submit" class="btn">Save</button>
-</form>
-<a href="/notes" class="btn">Back to Notes</a>
+<div class="centered-container">
+  <div class="header-row">
+    <div class="header-title">
+      &lt;<span style="color:#4caf50">c</span>/<span class="note-red">note</span>&gt;
+    </div>
+    <div class="header-logo">
+      <span role="img" aria-label="moon">🌗</span>
+    </div>
+    <div class="header-logout">&lt;log/out&gt;</div>
+  </div>
+  <h1 class="main-header">[pad]</h1>
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="error"><%= error %></div>
+  <% } %>
+  <form action="/notes" method="POST" class="note-form">
+    <label>[tag]</label>
+    <input type="text" name="category" required placeholder="[tag]">
+    <label>[title]</label>
+    <input type="text" name="title" required placeholder="[title]">
+    <textarea name="body" required placeholder="!..." style="min-height:200px;"></textarea>
+    <button type="submit" class="btn">Save</button>
+  </form>
+  <a href="/notes" class="btn">Back to Notes</a>
+</div>

@@ -1,22 +1,30 @@
-<h1>My Notes</h1>
-<% if (typeof error !== 'undefined' && error) { %>
-  <div class="error"><%= error %></div>
-<% } %>
-<a href="/notes/new" class="btn">Add a new note</a>
-<ul class="note-list">
-  <% if (notes && notes.length > 0) { %>
-    <% notes.forEach(note => { %>
-      <li>
-        <strong><%= note.title %></strong> (<%= note.category %>)<br>
-        <%= note.body %><br>
-        <a href="/notes/<%= note._id %>">View</a>
-        <a href="/notes/<%= note._id %>/edit">Edit</a>
-        <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display:inline;">
-          <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
-      </li>
-    <% }) %>
-  <% } else { %>
-    <li>No notes found.</li>
-  <% } %>
-</ul>
+<div class="centered-container">
+  <div class="header-row">
+    <div class="header-title">
+      &lt;<span style="color:#4caf50">c</span>/<span class="note-red">note</span>&gt;
+    </div>
+    <div class="header-logo">
+      <span role="img" aria-label="moon">🌗</span>
+    </div>
+    <div class="header-logout">&lt;log/out&gt;</div>
+  </div>
+  <h1 class="main-header">[pad]</h1>
+  <a href="/notes/new" class="btn">Add a new note</a>
+  <ul class="note-list">
+    <% if (notes && notes.length > 0) { %>
+      <% notes.forEach(note => { %>
+        <li>
+          <strong><%= note.title %></strong> (<%= note.category %>)<br>
+          <%= note.body %><br>
+          <a href="/notes/<%= note._id %>">View</a>
+          <a href="/notes/<%= note._id %>/edit">Edit</a>
+          <form action="/notes/<%= note._id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </li>
+      <% }) %>
+    <% } else { %>
+      <li>No notes found.</li>
+    <% } %>
+  </ul>
+</div>

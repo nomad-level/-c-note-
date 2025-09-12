@@ -1,5 +1,6 @@
 
 
+
 const express = require("express");
 const router = express.Router();
 const Note = require("../models/Note");
@@ -13,13 +14,22 @@ function requireLogin(req, res, next) {
 }
 
 // Notes Index (List All Notes for the logged-in user)
+// Render the new pad.ejs as the main notes view after login
 router.get("/", requireLogin, async (req, res) => {
   try {
     const notes = await Note.find({ user: req.session.userId });
-    res.render("notes/list", { notes });
+          // Group notes by category for the dropdown, include _id and title for each note
+    const tagsMap = {};
+    notes.forEach(note => {
+      const tag = note.category || 'untagged';
+      if (!tagsMap[tag]) tagsMap[tag] = [];
+            tagsMap[tag].push({ _id: note._id, title: note.title });
+    });
+  const tags = Object.keys(tagsMap).map(tag => ({ name: tag, notes: tagsMap[tag] }));
+  res.render("notes/pad", { tags, note: null });
   } catch (err) {
     console.log(err);
-    res.render("notes/list", { error: "Error loading notes." });
+    res.render("notes/pad", { tags: [], note: null, error: "Error loading notes." });
   }
 });
 
@@ -47,16 +57,15 @@ router.post("/", requireLogin, async (req, res) => {
 });
 
 // Show a Single Note
-router.get("/:id", requireLogin, async (req, res) => {
+// API endpoint to get a note by _id (for pad dropdown)
+router.get("/get", requireLogin, async (req, res) => {
   try {
-    const note = await Note.findOne({ _id: req.params.id, user: req.session.userId });
-    if (!note) {
-      return res.render("notes/show", { error: "Note not found." });
-    }
-    res.render("notes/show", { note });
+    const { id } = req.query;
+    const note = await Note.findOne({ _id: id, user: req.session.userId });
+    if (!note) return res.status(404).json({ error: "Note not found" });
+    res.json({ category: note.category, title: note.title, body: note.body });
   } catch (err) {
-    console.log(err);
-    res.render("notes/show", { error: "Error loading note." });
+    res.status(500).json({ error: "Error loading note" });
   }
 });
 

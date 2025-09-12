@@ -1,3 +1,137 @@
+/* Center main content vertically and horizontally */
+.centered-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+/* Large, bold, custom-styled header */
+.main-header {
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Remove bullet points and default list styles */
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 1.5rem;
+}
+
+/* Modern form styling */
+.note-form {
+  background: #fff;
+  border: 1.5px solid #bbb;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 2rem;
+  width: 600px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.note-form input,
+.note-form textarea {
+  font-size: 1.5rem;
+  padding: 0.5em 0.8em;
+  border: 1.5px solid #bbb;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.note-form textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.note-form label {
+  font-size: 1.3rem;
+  margin-bottom: 0.3em;
+}
+
+/* Pad/center [pad] text */
+.pad-label {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* Header logo and nav styling */
+.header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 5rem auto 2.5rem auto;
+  position: relative;
+}
+
+.header-title, .header-logout {
+  font-size: 2.5rem;
+  font-weight: bold;
+  min-width: 200px;
+  text-align: center;
+}
+
+.header-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffe680;
+  border: 3px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin: 0 2rem;
+  flex-shrink: 0;
+}
+
+.header-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffe680;
+  border: 3px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin: 0 2rem;
+}
+
+.header-title, .header-logout {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.header-title span {
+  color: #4caf50;
+}
+.header-title .note-red {
+  color: #f44336;
+}
+
+.header-logout {
+  color: #222;
+}
 .dropdown-form {
   display: none;
   position: absolute;
@@ -81,18 +215,41 @@
 .google-btn {
   border-color: #ea4335;
   color: #ea4335;
+  background: transparent;
+  font-weight: bold;
 }
 .google-btn:hover, .google-btn:focus {
   background: #ea4335;
   color: #fff;
 }
+/* GitHub button styled to match Google button, but in blue */
+
+/* Make GitHub button exactly like Google button */
 .github-btn {
-  border-color: #24292f;
-  color: #24292f;
+  border: 2px solid #4285f4;
+  color: #4285f4;
+  background: #fff;
+  font-weight: bold;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  padding: 0.37em 1.2em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.13s, color 0.17s, border 0.18s, box-shadow 0.17s;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.github-btn:hover, .github-btn:focus {
+  background: #4285f4;
+  color: #fff;
+  border-color: #4285f4;
 }
 .github-btn:hover, .github-btn:focus {
-  background: #24292f;
+  background: #0074d9;
   color: #fff;
+  border-color: #0074d9;
 }
 .submit-btn {
   margin-top: 0.6em;
@@ -409,14 +566,6 @@ html, body {
 }
 .google-btn:hover, .google-btn:focus {
   background: #ea4335;
-  color: #fff;
-}
-.github-btn {
-  border-color: #24292f;
-  color: #24292f;
-}
-.github-btn:hover, .github-btn:focus {
-  background: #24292f;
   color: #fff;
 }
 
