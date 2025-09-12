@@ -1,0 +1,38 @@
+# <c/note>
+
+A code‑styled notes app built to organize code snip-its.
+
+## What it does
+- Sign up / log in / log out
+- Add, view, edit, delete notes
+- Each note can have a tag, title, body
+- Basic session auth
+
+## Tech
+Node.js • Express • EJS • MongoDB (Mongoose) • CSS
+
+## Run it
+```bash
+npm install
+# create .env file with:
+# MONGODB_URI=mongodb://127.0.0.1:27017/cnote
+# SESSION_SECRET=anything-long
+# PORT=3000
+npm start
+```
+Open http://localhost:3000
+
+## Structure
+```
+models/   # Mongoose schemas
+routes/   # Express route files
+views/    # EJS templates
+public/   # styles.css, scripts
+server.js # app entry
+```
+
+## Future ideas
+- Password hashing
+- Tag filtering
+- Dark mode
+- Markdown notes
