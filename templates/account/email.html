@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="alert alert-info text-center">
+    <h4>Email Confirmation</h4>
+    <p>We've sent you an email with a confirmation link. Please check your inbox and click the link to verify your email address.</p>
+    <p class="mb-0"><small>If you don't see the email, please check your spam folder.</small></p>
+  </div>
+  <div class="text-center mt-3">
+    <a href="{% url 'note_list' %}" class="btn btn-primary">Go to Notes</a>
+  </div>
+</div>
+{% endblock %}

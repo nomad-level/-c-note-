@@ -1,27 +1,43 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Theme toggle with localStorage persistence
+  // === DARK MODE FEATURE ===
+  // This section enables dark mode for the app and remembers the user's preference.
+
+  // Get the dark mode toggle button (the moon/sun icon in the header)
   const themeToggle = document.getElementById('mode-toggle');
+
+  // Helper function to set the theme (dark or light)
+  // 'dark' is a boolean: true for dark mode, false for light mode
   const setTheme = (dark) => {
     if (dark) {
+      // Add the 'dark-mode' class to the body (and html via inline script)
       document.body.classList.add('dark-mode');
+      // Change the icon to a sun when in dark mode
       if (themeToggle) {
         const icon = themeToggle.querySelector('img');
         if (icon) icon.src = '/sun.svg';
       }
     } else {
+      // Remove the 'dark-mode' class for light mode
       document.body.classList.remove('dark-mode');
+      // Change the icon to a moon when in light mode
       if (themeToggle) {
         const icon = themeToggle.querySelector('img');
         if (icon) icon.src = '/moon.svg';
       }
     }
   };
-  // On load, set theme from localStorage
+
+  // On page load, check if the user previously chose dark mode (saved in localStorage)
+  // If so, enable dark mode right away
   setTheme(localStorage.getItem('padDarkMode') === 'true');
+
+  // When the user clicks the toggle button, switch between dark and light mode
   if (themeToggle) {
     themeToggle.addEventListener('click', function() {
+      // Toggle the mode: if currently dark, switch to light, and vice versa
       const dark = !document.body.classList.contains('dark-mode');
       setTheme(dark);
+      // Save the user's preference in localStorage so it stays after reload
       localStorage.setItem('padDarkMode', dark);
     });
   }

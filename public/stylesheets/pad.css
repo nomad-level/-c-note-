@@ -1,18 +1,26 @@
-/* ==== General Styles ==== */
+/*
+  ==== General Styles ====
+  These styles set the default look for the app in light mode.
+  The body uses a white background and dark text by default.
+*/
 body {
-  background: #fff;
-  color: #111;
+  background: #fff; /* White background for light mode */
+  color: #111;      /* Dark text for light mode */
   font-family: 'Fira Mono', 'Consolas', monospace;
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  transition: background 0.3s, color 0.3s;
+  transition: background 0.3s, color 0.3s; /* Smooth transition when switching modes */
 }
 
-/* ==== Dark Mode ==== */
-body.dark-mode {
-  background: #16171a;
-  color: #edecee;
+/*
+  ==== Dark Mode ====
+  When the 'dark-mode' class is present on the body (or html),
+  these styles override the light mode colors to enable dark mode.
+*/
+body.dark-mode, html.dark-mode {
+  background: #16171a; /* Dark background for dark mode */
+  color: #edecee;      /* Light text for dark mode */
 }
 
 /* ==== Header ==== */
@@ -110,8 +118,8 @@ body.dark-mode {
   transition: color 0.2s;
 }
 
-body.dark-mode .pad-dropdown-label {
-  color: #edecee;
+body.dark-mode .pad-dropdown-label, html.dark-mode .pad-dropdown-label {
+  color: #edecee; /* Make dropdown label light in dark mode */
 }
 
 .pad-dropdown-list {
@@ -129,8 +137,8 @@ body.dark-mode .pad-dropdown-label {
   font-family: inherit;
 }
 
-body.dark-mode .pad-dropdown-list {
-  background: #23242a;
+body.dark-mode .pad-dropdown-list, html.dark-mode .pad-dropdown-list {
+  background: #23242a; /* Dark dropdown background */
   border-color: #333;
   color: #edecee;
 }
@@ -144,7 +152,7 @@ body.dark-mode .pad-dropdown-list {
   position: relative;
 }
 
-body.dark-mode .pad-tag-item {
+body.dark-mode .pad-tag-item, html.dark-mode .pad-tag-item {
   border-bottom: 1px solid #2a2a2a;
 }
 
@@ -165,7 +173,7 @@ body.dark-mode .pad-tag-item {
   padding-left: 10px;
 }
 
-body.dark-mode .pad-titles-list {
+body.dark-mode .pad-titles-list, html.dark-mode .pad-titles-list {
   border-left: 2px solid #388e3c;
 }
 
@@ -210,7 +218,7 @@ body.dark-mode .pad-titles-list {
   margin-bottom: 0;
 }
 
-body.dark-mode .pad-input {
+body.dark-mode .pad-input, html.dark-mode .pad-input {
   border-color: #2a2a2a;
   background: #222;
   color: #edecee;
@@ -235,7 +243,7 @@ body.dark-mode .pad-input {
   transition: border 0.2s;
 }
 
-body.dark-mode .pad-textarea {
+body.dark-mode .pad-textarea, html.dark-mode .pad-textarea {
   border-color: #2a2a2a;
   background: #222;
   color: #edecee;

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome - c/note{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="col-lg-8 col-xl-6 text-center">
+            <h1 class="display-3 mb-4">&lt;c/note&gt;</h1>
+            <p class="lead mb-5">Your personal code snippet manager. Organize, store, and access your code notes securely.</p>
+            
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center mb-5">
+                <a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg px-5">
+                    <i class="bi bi-person-plus"></i> Get Started
+                </a>
+                <a href="{% url 'account_login' %}" class="btn btn-outline-secondary btn-lg px-5">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+            </div>
+            
+            <div class="row text-start mt-5">
+                <div class="col-md-6 mb-4">
+                    <div class="d-flex">
+                        <i class="bi bi-lock-fill text-primary fs-2 me-3"></i>
+                        <div>
+                            <h5>Private & Secure</h5>
+                            <p class="text-muted">Your code snippets are private and only accessible to you.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="d-flex">
+                        <i class="bi bi-tags-fill text-primary fs-2 me-3"></i>
+                        <div>
+                            <h5>Organized by Category</h5>
+                            <p class="text-muted">Filter by language or framework to find what you need quickly.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="d-flex">
+                        <i class="bi bi-image-fill text-primary fs-2 me-3"></i>
+                        <div>
+                            <h5>Image Attachments</h5>
+                            <p class="text-muted">Add screenshots and diagrams to your code notes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="d-flex">
+                        <i class="bi bi-moon-stars-fill text-primary fs-2 me-3"></i>
+                        <div>
+                            <h5>Dark Mode</h5>
+                            <p class="text-muted">Easy on the eyes with automatic dark mode support.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

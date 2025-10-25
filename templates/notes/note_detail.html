@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ note.title }} - c/note{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <div class="card shadow mb-4">
+        <div class="card-header bg-dark text-white">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2">
+                <div class="flex-grow-1">
+                    <h2 class="mb-1 fs-4 fs-md-3">{{ note.title }}</h2>
+                    <small><i class="bi bi-clock"></i> Created {{ note.date_created|timesince }} ago</small>
+                </div>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    {% if is_owner %}
+                    <a href="{% url 'note_edit' note.pk %}" class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-pencil-square"></i><span class="d-none d-sm-inline"> Edit</span>
+                    </a>
+                    <form method="post" action="{% url 'note_delete' note.pk %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this note? This action cannot be undone.');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i><span class="d-none d-sm-inline"> Delete</span>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <div class="mb-3">
+                <span class="badge bg-primary category-badge me-2">
+                    <i class="bi bi-tag"></i> {{ note.get_category_display }}
+                </span>
+            </div>
+            
+            <div class="mt-4">
+                <h5 class="text-muted mb-3">Code / Content</h5>
+                <div class="code-content">{{ note.body }}</div>
+            </div>
+
+            {% if note.image %}
+            <div class="mt-4">
+                <h5 class="text-muted mb-3">Attachment</h5>
+                <img src="{{ note.image.url }}" alt="Note attachment" 
+                     class="img-fluid rounded shadow-sm" 
+                     style="max-width: 100%; max-height: 600px;">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-4">
+        <a href="{% url 'note_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Back to All Notes
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}All Notes - c/note{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1><i class="bi bi-journal-code"></i> Code Snippets</h1>
+            <p class="text-muted" style="margin-left: 3.1rem;">Your collection of code notes and solutions.</p>
+        </div>
+    </div>
+
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label class="form-label"><i class="bi bi-funnel"></i> Filter by Category</label>
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for value, label in categories %}
+                        <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-6 col-md-6 col-lg-2 d-flex align-items-end">
+                    {% if session_id %}
+                        <a href="?my_notes=1" class="btn btn-primary text-dark w-100 {% if show_my_notes %}active{% endif %}">
+                        <i class="bi bi-person-circle"></i><span class="d-none d-sm-inline"> My Notes</span>
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="col-6 col-md-6 col-lg-2 d-flex align-items-end">
+                        <a href="{% url 'note_list' %}" class="btn btn-warning text-dark w-100">
+                        <i class="bi bi-x-circle"></i><span class="d-none d-sm-inline"> Clear</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    {% if notes %}
+    <div class="row">
+        {% for note in notes %}
+        <div class="col-12 col-lg-6 mb-4">
+            <div class="card note-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title">
+                            <a href="{% url 'note_detail' note.pk %}" class="text-decoration-none link-body-emphasis">
+                                {{ note.title }}
+                            </a>
+                        </h5>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <span class="badge bg-primary category-badge">
+                            <i class="bi bi-tag"></i> {{ note.get_category_display }}
+                        </span>
+                    </div>
+                    
+                    <p class="card-text text-muted" style="font-family: monospace;">
+                        {{ note.body|truncatewords:20 }}
+                    </p>
+                    
+                    {% if note.image %}
+                    <div class="mb-2">
+                        <i class="bi bi-image text-muted"></i> <small class="text-muted">Has attachment</small>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-clock"></i> {{ note.date_created|timesince }} ago
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'note_detail' note.pk %}" class="btn btn-outline-primary btn-sm w-100">
+                        <i class="bi bi-arrow-right-circle"></i> View Note
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+        <i class="bi bi-info-circle"></i> No notes found. Create your first code snippet!
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
