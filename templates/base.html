@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{% block title %}c/note - Code Snippet Manager{% endblock %}</title>
     <script>
         // Apply saved theme ASAP to avoid flash
@@ -54,6 +54,13 @@
             font-family: 'Courier New', monospace;
             white-space: pre-wrap;
             word-wrap: break-word;
+            word-break: break-word;
+            overflow-x: auto; /* prevent layout break on very long lines */
+            font-size: 0.95rem;
+        }
+        .card-title, .navbar-brand {
+            word-break: break-word;
+            hyphens: auto;
         }
         footer {
             background-color: #212529;
@@ -73,6 +80,10 @@
             .card-body {
                 padding: 1rem !important;
             }
+            .code-content {
+                font-size: 0.9rem;
+                padding: 1rem;
+            }
             h1 {
                 font-size: 1.75rem;
             }
@@ -81,6 +92,10 @@
             }
             h3 {
                 font-size: 1.25rem;
+            }
+            /* make navbar dropdown easier to tap */
+            .navbar .dropdown-menu {
+                font-size: 1rem;
             }
         }
 

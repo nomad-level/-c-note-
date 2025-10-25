@@ -42,9 +42,10 @@
             {% if note.image %}
             <div class="mt-4">
                 <h5 class="text-muted mb-3">Attachment</h5>
-                <img src="{{ note.image.url }}" alt="Note attachment" 
-                     class="img-fluid rounded shadow-sm" 
-                     style="max-width: 100%; max-height: 600px;">
+             <img src="{{ note.image.url }}" alt="Note attachment"
+                 class="img-fluid rounded shadow-sm"
+                 loading="lazy"
+                 style="max-width: 100%; max-height: 600px;">
             </div>
             {% endif %}
         </div>
