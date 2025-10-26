@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from .models import Note
 from .forms import NoteForm
 import uuid
@@ -23,6 +24,11 @@ def note_list(request):
     category = request.GET.get('category')
     if category:
         notes = notes.filter(category=category)
+
+    # Apply title search filter
+    q = request.GET.get('q', '').strip()
+    if q:
+        notes = notes.filter(Q(title__icontains=q) | Q(body__icontains=q))
     
     # "My Notes" checkbox is now redundant since notes are already user-scoped
     my_notes = request.GET.get('my_notes')
@@ -33,6 +39,7 @@ def note_list(request):
         'selected_category': category,
         'show_my_notes': my_notes,
         'session_id': None,
+        'q': q,
     }
     
     return render(request, 'notes/note_list.html', context)
