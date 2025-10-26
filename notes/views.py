@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Note
 from .forms import NoteForm
-import uuid
 
 
 def home(request):
@@ -16,8 +15,7 @@ def home(request):
 
 @login_required
 def note_list(request):
-    """Display list of current user's notes with optional category filtering. Requires authentication."""
-    # Scope notes to the authenticated user
+    """Display list of current user's notes with optional category filtering and search."""
     notes = Note.objects.filter(user=request.user)
     
     # Get all unique categories used by this user
@@ -28,20 +26,15 @@ def note_list(request):
     if category:
         notes = notes.filter(category=category)
 
-    # Apply title search filter
+    # Apply search filter (title or body)
     q = request.GET.get('q', '').strip()
     if q:
         notes = notes.filter(Q(title__icontains=q) | Q(body__icontains=q))
     
-    # "My Notes" checkbox is now redundant since notes are already user-scoped
-    my_notes = request.GET.get('my_notes')
-    
     context = {
         'notes': notes,
-        'categories': user_categories,  # User's actual categories instead of CATEGORY_CHOICES
+        'categories': user_categories,
         'selected_category': category,
-        'show_my_notes': my_notes,
-        'session_id': None,
         'q': q,
     }
     
@@ -50,15 +43,11 @@ def note_list(request):
 
 @login_required
 def note_detail(request, pk):
-    """Display a single note with edit/delete controls for owner. Requires authentication."""
+    """Display a single note with edit/delete controls for owner."""
     note = get_object_or_404(Note, pk=pk, user=request.user)
-    
-    # Owner check now uses user relationship
-    is_owner = (note.user_id == request.user.id)
     
     context = {
         'note': note,
-        'is_owner': is_owner,
     }
     
     return render(request, 'notes/note_detail.html', context)
@@ -66,13 +55,11 @@ def note_detail(request, pk):
 
 @login_required
 def note_create(request):
-    """Create a new note. Requires authentication."""
+    """Create a new note."""
     if request.method == 'POST':
         form = NoteForm(request.POST, request.FILES)
         if form.is_valid():
             note = form.save(commit=False)
-            
-            # Associate note with the authenticated user
             note.user = request.user
             note.save()
             
@@ -90,7 +77,7 @@ def note_create(request):
 
 @login_required
 def note_edit(request, pk):
-    """Edit an existing note. Requires authentication."""
+    """Edit an existing note."""
     note = get_object_or_404(Note, pk=pk, user=request.user)
     
     if request.method == 'POST':
@@ -112,7 +99,7 @@ def note_edit(request, pk):
 
 @login_required
 def note_delete(request, pk):
-    """Delete a note. Requires authentication."""
+    """Delete a note."""
     note = get_object_or_404(Note, pk=pk, user=request.user)
     
     if request.method == 'POST':

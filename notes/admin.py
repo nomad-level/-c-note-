@@ -4,7 +4,7 @@ from .models import Note
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    list_display = ['title', 'user', 'category', 'date_created', 'session_id']
+    list_display = ['title', 'user', 'category', 'date_created']
     list_filter = ['category', 'date_created']
     search_fields = ['title', 'body']
     date_hierarchy = 'date_created'
