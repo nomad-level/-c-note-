@@ -15,47 +15,36 @@ def home(request):
 
 @login_required
 def note_list(request):
-    """Display list of all notes with optional category filtering and 'My Notes'. Requires authentication."""
-    notes = Note.objects.all()
-
-    # Get or create session ID for "My Notes" functionality
-    session_id = request.COOKIES.get('cnote_session_id')
-    new_session_id = None
-    if not session_id:
-        new_session_id = str(uuid.uuid4())
-        session_id = new_session_id
+    """Display list of current user's notes with optional category filtering. Requires authentication."""
+    # Scope notes to the authenticated user
+    notes = Note.objects.filter(user=request.user)
     
     # Apply category filter
     category = request.GET.get('category')
     if category:
         notes = notes.filter(category=category)
     
-    # Apply "My Notes" filter
+    # "My Notes" checkbox is now redundant since notes are already user-scoped
     my_notes = request.GET.get('my_notes')
-    if my_notes and session_id:
-        notes = notes.filter(session_id=session_id)
     
     context = {
         'notes': notes,
         'categories': Note.CATEGORY_CHOICES,
         'selected_category': category,
         'show_my_notes': my_notes,
-        'session_id': session_id,
+        'session_id': None,
     }
     
-    response = render(request, 'notes/note_list.html', context)
-    if new_session_id:
-        response.set_cookie('cnote_session_id', new_session_id, max_age=365*24*60*60)
-    return response
+    return render(request, 'notes/note_list.html', context)
 
 
 @login_required
 def note_detail(request, pk):
     """Display a single note with edit/delete controls for owner. Requires authentication."""
-    note = get_object_or_404(Note, pk=pk)
+    note = get_object_or_404(Note, pk=pk, user=request.user)
     
-    session_id = request.COOKIES.get('cnote_session_id')
-    is_owner = (session_id and note.session_id == session_id)
+    # Owner check now uses user relationship
+    is_owner = (note.user_id == request.user.id)
     
     context = {
         'note': note,
@@ -73,18 +62,12 @@ def note_create(request):
         if form.is_valid():
             note = form.save(commit=False)
             
-            # Associate note with logged-in user via session_id
-            session_id = request.COOKIES.get('cnote_session_id')
-            if not session_id:
-                session_id = str(uuid.uuid4())
-            
-            note.session_id = session_id
+            # Associate note with the authenticated user
+            note.user = request.user
             note.save()
             
             messages.success(request, 'Your note has been created successfully!')
-            response = redirect('note_detail', pk=note.pk)
-            response.set_cookie('cnote_session_id', session_id, max_age=365*24*60*60)
-            return response
+            return redirect('note_detail', pk=note.pk)
     else:
         form = NoteForm()
     
@@ -94,12 +77,7 @@ def note_create(request):
 @login_required
 def note_edit(request, pk):
     """Edit an existing note. Requires authentication."""
-    note = get_object_or_404(Note, pk=pk)
-    
-    session_id = request.COOKIES.get('cnote_session_id')
-    if not session_id or note.session_id != session_id:
-        messages.error(request, 'You can only edit your own notes!')
-        return redirect('note_detail', pk=note.pk)
+    note = get_object_or_404(Note, pk=pk, user=request.user)
     
     if request.method == 'POST':
         form = NoteForm(request.POST, request.FILES, instance=note)
@@ -116,12 +94,7 @@ def note_edit(request, pk):
 @login_required
 def note_delete(request, pk):
     """Delete a note. Requires authentication."""
-    note = get_object_or_404(Note, pk=pk)
-    
-    session_id = request.COOKIES.get('cnote_session_id')
-    if not session_id or note.session_id != session_id:
-        messages.error(request, 'You can only delete your own notes!')
-        return redirect('note_detail', pk=note.pk)
+    note = get_object_or_404(Note, pk=pk, user=request.user)
     
     if request.method == 'POST':
         note.delete()
