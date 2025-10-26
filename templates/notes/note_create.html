@@ -36,8 +36,17 @@
                                 <i class="bi bi-tag"></i> Category *
                             </label>
                             {{ form.category }}
+                            <div id="customCategoryWrapper" style="display: none;">
+                                {{ form.custom_category }}
+                                <small class="form-text text-muted">
+                                    Enter your own category (e.g., TypeScript, Ruby, DevOps)
+                                </small>
+                            </div>
                             {% if form.category.errors %}
                             <div class="text-danger small mt-1">{{ form.category.errors }}</div>
+                            {% endif %}
+                            {% if form.non_field_errors %}
+                            <div class="text-danger small mt-1">{{ form.non_field_errors }}</div>
                             {% endif %}
                         </div>
                         
@@ -81,4 +90,29 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleCustomCategory() {
+    const categorySelect = document.getElementById('id_category');
+    const customWrapper = document.getElementById('customCategoryWrapper');
+    const customInput = document.getElementById('id_custom_category');
+    
+    if (categorySelect.value === '__custom__') {
+        customWrapper.style.display = 'block';
+        customInput.required = true;
+        customInput.focus();
+    } else {
+        customWrapper.style.display = 'none';
+        customInput.required = false;
+        customInput.value = '';
+    }
+}
+
+// Check on page load in case of form errors
+document.addEventListener('DOMContentLoaded', function() {
+    toggleCustomCategory();
+});
+</script>
 {% endblock %}

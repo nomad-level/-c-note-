@@ -20,9 +20,9 @@
                     <label class="form-label"><i class="bi bi-funnel"></i> Filter by Category</label>
                     <select name="category" class="form-select" onchange="this.form.submit()">
                         <option value="">All Categories</option>
-                        {% for value, label in categories %}
-                        <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>
-                            {{ label }}
+                        {% for cat in categories %}
+                        <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>
+                            {{ cat }}
                         </option>
                         {% endfor %}
                     </select>
@@ -74,7 +74,7 @@
                     
                     <div class="mb-2">
                         <span class="badge bg-primary category-badge">
-                            <i class="bi bi-tag"></i> {{ note.get_category_display }}
+                            <i class="bi bi-tag"></i> {{ note.category }}
                         </span>
                     </div>
                     

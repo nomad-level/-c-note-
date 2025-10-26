@@ -7,23 +7,19 @@ class Note(models.Model):
     Note model for storing code snippets and notes.
     Keeps the simple structure from the original but adds image support.
     """
-    CATEGORY_CHOICES = [
-        ('python', 'Python'),
-        ('javascript', 'JavaScript'),
-        ('html', 'HTML'),
-        ('css', 'CSS'),
-        ('react', 'React'),
-        ('django', 'Django'),
-        ('nodejs', 'Node.js'),
-        ('sql', 'SQL'),
-        ('git', 'Git'),
-        ('general', 'General'),
-        ('other', 'Other'),
+    # Suggested categories for quick reference
+    SUGGESTED_CATEGORIES = [
+        'Python', 'JavaScript', 'HTML', 'CSS', 'React', 
+        'Django', 'Node.js', 'SQL', 'Git', 'General', 'Other'
     ]
     
     title = models.CharField(max_length=200)
     body = models.TextField(help_text="Your code snippet or note content")
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='general')
+    category = models.CharField(
+        max_length=50, 
+        default='General',
+        help_text="Enter any category (e.g., Python, JavaScript, etc.)"
+    )
     image = models.ImageField(upload_to='note_images/', blank=True, null=True, 
                              help_text="Optional: attach an image or screenshot")
     # New ownership model: real FK to authenticated user

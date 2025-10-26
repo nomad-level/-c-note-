@@ -20,6 +20,9 @@ def note_list(request):
     # Scope notes to the authenticated user
     notes = Note.objects.filter(user=request.user)
     
+    # Get all unique categories used by this user
+    user_categories = Note.objects.filter(user=request.user).values_list('category', flat=True).distinct().order_by('category')
+    
     # Apply category filter
     category = request.GET.get('category')
     if category:
@@ -35,7 +38,7 @@ def note_list(request):
     
     context = {
         'notes': notes,
-        'categories': Note.CATEGORY_CHOICES,
+        'categories': user_categories,  # User's actual categories instead of CATEGORY_CHOICES
         'selected_category': category,
         'show_my_notes': my_notes,
         'session_id': None,
@@ -78,7 +81,11 @@ def note_create(request):
     else:
         form = NoteForm()
     
-    return render(request, 'notes/note_create.html', {'form': form})
+    context = {
+        'form': form,
+        'suggested_categories': Note.SUGGESTED_CATEGORIES,
+    }
+    return render(request, 'notes/note_create.html', context)
 
 
 @login_required
@@ -95,7 +102,12 @@ def note_edit(request, pk):
     else:
         form = NoteForm(instance=note)
 
-    return render(request, 'notes/note_edit.html', {'form': form, 'note': note})
+    context = {
+        'form': form,
+        'note': note,
+        'suggested_categories': Note.SUGGESTED_CATEGORIES,
+    }
+    return render(request, 'notes/note_edit.html', context)
 
 
 @login_required
